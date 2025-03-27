@@ -2,112 +2,533 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Почему исчезли очереди на границе? Комментарий ГПК</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onliner.by - Пародия</title>
     <style>
-        /* === Onliner-style CSS === */
+        /* Общие стили */
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
+            margin: 0;
+            padding: 0;
             color: #333;
-            max-width: 800px;
+            line-height: 1.5;
+            background-color: #f5f5f5;
+        }
+        
+        /* Обертка для боковых рамок */
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Боковые рамки */
+        .left-border, .right-border {
+            width: 100px;
+            background-color: #e0e0e0;
+            border: 1px solid #ccc;
+            position: relative;
+        }
+        
+        .left-border { border-right: none; }
+        .right-border { border-left: none; }
+        
+        /* Основное содержимое */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Верхняя панель */
+        .top-bar {
+            background-color: #cbcbcb;
+            padding: 8px 0;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .top-bar-container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            background: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
         }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
+        
+        .logo img {
+            height: 23px;
+            width: auto;
+        }
+        
+        /* Мобильное меню */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item {
+            margin-left: 20px;
+            position: relative;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            padding: 5px 0;
+        }
+        
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+        
+        /* Выпадающее меню */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .nav-item:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        .dropdown-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .dropdown-link {
+            color: #333;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-link:hover {
             color: #cc0000;
-            margin-bottom: 15px;
         }
-
-        h2 {
-            font-size: 22px;
-            color: #222;
-            margin: 25px 0 15px 0;
+        
+        /* Основной контент */
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 15px;
+            background-color: white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
-
-        p {
-            font-size: 16px;
-            margin-bottom: 15px;
+        
+        .news-title {
+            font-size: 28px;
+            color: #0f0f0f;
+            margin-bottom: 10px;
+            animation: slideIn 0.5s ease;
         }
-
-        em {
+        
+        .news-meta {
             color: #777;
             font-size: 14px;
+            margin-bottom: 20px;
         }
-
-        strong {
-            color: #cc0000;
-        }
-
-        .fake-news {
-            background: #f9f9f9;
-            border-left: 4px solid #cc0000;
-            padding: 15px;
-            margin: 20px 0;
-        }
-
-        img {
-            width: 100%;
+        
+        .news-content img {
+            max-width: 100%;
             height: auto;
-            border-radius: 4px;
             margin: 15px 0;
+            display: block;
+            transition: transform 0.3s;
         }
-
-        ol {
-            padding-left: 20px;
+        
+        .news-content img:hover {
+            transform: scale(1.02);
         }
-
-        li {
+        
+        /* Кнопки социальных сетей в стиле Onliner */
+        .news-reference__control {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0 25px;
+            align-items: center;
+        }
+        
+        .news-reference__button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 40px;
+            border-radius: 4px;
+            background-color: #f2f2f2;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .news-reference__button::before {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .news-reference__button:hover {
+            background-color: #e6e6e6;
+        }
+        
+        .news-reference__button_fb::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234267B2' d='M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z'/%3E%3C/svg%3E");
+        width: 40px;
+        height: 40px;
+        }
+        
+        .news-reference__button_vk::before {
+            background-image: url("https://sun6-21.userapi.com/s/v1/ig2/pShjyr9QdThTBI5lDJuWFRrxtXkrbsivip4EDvryM130im30QeJaBemeXtOs7yGaJBynzns_GF7PdU4VEcflvDyx.jpg?size=750x750&quality=95&crop=0,0,750,750&ava=1");
+            width: 40px;
+        height: 40px;
+    }
+        
+        .news-reference__button_tw::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231DA1F2' d='M22.162 5.656a8.384 8.384 0 01-2.402.658A4.196 4.196 0 0021.6 4c-.82.488-1.719.83-2.656 1.015a4.182 4.182 0 00-7.126 3.814 11.874 11.874 0 01-8.62-4.37 4.168 4.168 0 00-.566 2.103c0 1.45.738 2.731 1.86 3.481a4.168 4.168 0 01-1.894-.523v.052a4.185 4.185 0 003.355 4.101 4.21 4.21 0 01-1.89.072A4.185 4.185 0 007.97 16.65a8.394 8.394 0 01-6.191 1.732 11.83 11.83 0 006.41 1.88c7.693 0 11.9-6.373 11.9-11.9 0-.18-.005-.362-.013-.54a8.496 8.496 0 002.087-2.165z'/%3E%3C/svg%3E");
+            width: 40px;
+        height: 40px;
+        }
+        
+        .news-reference__button_ok::before {
+            background-image: url("https://pngteam.com/images/odnoklassniki-png-490x368_a0c02712_transparent_202060.png.png");
+            width: 40px;
+        height: 40px;
+        }
+        
+        .news-reference__button_vb::before {
+            background-image: url("https://maximumtest-site.storage.yandexcloud.net/thank-you-modal/c808fa41-c0bd-4401-a35e-fd3392e64f74-cdcdcd.webp");
+            width: 40px;
+        height: 40px;
+        }
+        
+        .news-reference__button_tg::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232AABEE' d='M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.022c.242-.213-.054-.333-.373-.121l-6.869 4.326-2.96-.924c-.643-.203-.658-.643.136-.953l11.566-4.458c.538-.196 1.006.128.832.941z'/%3E%3C/svg%3E");
+            width: 40px;
+        height: 40px;
+        }
+        
+        /* Рекламный баннер */
+        .ad-banner {
+            background: #f0f0f0;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            border: 1px dashed #ccc;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Секция комментариев */
+        .comments-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .comment {
+            display: flex;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            margin-right: 15px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .comment-text {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .comment-form {
+            margin-top: 30px;
+        }
+        
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 100px;
             margin-bottom: 10px;
         }
-
-        .button {
-            display: inline-block;
+        
+        .comment-form button {
             background: #cc0000;
             color: white;
+            border: none;
             padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            margin: 20px 0;
-            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
-
+        
+        .comment-form button:hover {
+            background: #a80000;
+        }
+        
+        /* Футер */
         .footer {
-            border-top: 1px solid #eee;
-            margin-top: 30px;
-            padding-top: 20px;
-            font-size: 14px;
-            color: #777;
+            background: #333;
+            color: white;
+            padding: 30px 0;
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(204,0,0,0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(204,0,0,0); }
+            100% { box-shadow: 0 0 0 0 rgba(204,0,0,0); }
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .left-border, .right-border {
+                width: 50px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .left-border, .right-border {
+                width: 20px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #cbcbcb;
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-item {
+                margin: 10px 0;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                background: rgba(0,0,0,0.1);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .left-border, .right-border {
+                display: none;
+            }
+            
+            .news-reference__control {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Почему исчезли очереди на границе? Комментарий ГПК</h1>
-    <p><em>1 апреля 2024, 14:00</em></p>
-    
-    <div class="fake-news">
-        <p>Еще неделю назад Латвийско-Белорусскую границу в Силене невозможно было пересечь.</p>
+    <div class="page-wrapper">
+        <!-- Левая серая рамка -->
+        <div class="left-border"></div>
+        
+        <!-- Основное содержимое -->
+        <div class="main-content">
+            <!-- Верхняя панель -->
+            <div class="top-bar">
+                <div class="top-bar-container">
+                    <a href="#" class="logo"><img src="https://gc.onliner.by/images/logo/onliner_logo.v3@2x.png?1743076579" alt="Onliner"></a>
+                    
+                    <button class="mobile-menu-btn">☰</button>
+                    
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="https://www.onliner.by" class="nav-link">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://catalog.onliner.by" class="nav-link">Каталог</a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-item"><a href="#" class="dropdown-link">Электроника</a></div>
+                                <div class="dropdown-item"><a href="#" class="dropdown-link">Бытовая техника</a></div>
+                                <div class="dropdown-item"><a href="#" class="dropdown-link">Компьютеры</a></div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><a href="https://baraholka.onliner.by" class="nav-link">Барахолка</a></li>
+                        <li class="nav-item"><a href="https://forum.onliner.by" class="nav-link">Форум</a></li>
+                        <li class="nav-item"><a href="https://ab.onliner.by" class="nav-link">Авто</a></li>
+                        <li class="nav-item"><a href="https://r.onliner.by/pk/" class="nav-link">Дома</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">Техно</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">Регистрация</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">Войти</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Основной контент -->
+            <div class="container">
+                <h1 class="news-title">Латвия планирует возобновление работы пограничного пункта-пропуска "Силене"</h1>
+                
+                <div class="news-meta">01 апреля 2025, 09:00</div>
+                <img src="https://content.onliner.by/news/970x485/0c9694413e455f2dcd6a842e4cc6ec46.jpg" width="700" height="350" alt="Пункт пропуска Силене">
+                
+                <!-- Кнопки социальных сетей в стиле Onliner -->
+                <div class="news-reference__control" data-zeroes="yes">
+                    <a href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fauto.onliner.by%2F2023%2F09%2F22%2Fpochemu-umenshilis-ocheredi-na-granice-kommentarij-gpk" target="_blank" class="news-reference__button news-reference__button_fb" title="Поделиться в Facebook"></a>
+                    <a href="https://vk.com/share.php?url=https%3A%2F%2Fauto.onliner.by%2F2023%2F09%2F22%2Fpochemu-umenshilis-ocheredi-na-granice-kommentarij-gpk" target="_blank" class="news-reference__button news-reference__button_vk" title="Поделиться в VK"></a>
+                    <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fauto.onliner.by%2F2023%2F09%2F22%2Fpochemu-umenshilis-ocheredi-na-granice-kommentarij-gpk&amp;text=Латвия закрыла один пункт пропуска. Там хотят запретить проезд авто с номерами РБ" target="_blank" class="news-reference__button news-reference__button_tw" title="Поделиться в Twitter"></a>
+                    <a href="https://connect.ok.ru/offer?url=https%3A%2F%2Fauto.onliner.by%2F2023%2F09%2F22%2Fpochemu-umenshilis-ocheredi-na-granice-kommentarij-gpk" target="_blank" class="news-reference__button news-reference__button_ok" title="Поделиться в OK"></a>
+                    <a href="viber://forward?text=https%3A%2F%2Fauto.onliner.by%2F2023%2F09%2F22%2Fpochemu-umenshilis-ocheredi-na-granice-kommentarij-gpk" target="_blank" class="news-reference__button news-reference__button_vb" title="Поделиться в Viber"></a>
+                    <a href="https://t.me/share/url?url=https%3A%2F%2Fauto.onliner.by%2F2023%2F09%2F22%2Fpochemu-umenshilis-ocheredi-na-granice-kommentarij-gpk" target="_blank" class="news-reference__button news-reference__button_tg" title="Поделиться в Telegram"></a>
+                </div>
+
+                <div class="news-content">
+                    <p>Функционирование погранперехода „Силене" („Урбаны") было прекращено с 20:00 19 сентября 2021 года на неопределенный срок, позже подтвердили в ГПК со ссылкой на официальную информацию латвийской стороны.</p>
+                    
+                                       
+                    <p>В сети появились фото демонтажа заграждений установленных на Латвийской стороне пункта пропуска "Силене"</p>
+                    <img src="https://content.onliner.by/news/1100x5616/f1c0edacaf2b7c68c132802e5b6c34a4.jpg" height="400" width="500" alt="Демонтаж заграждений">
+                    
+                    <p>По сообщению Латвийского погрничного ведомства в связи с планируемым закрытием на ремонт пограничного пукта пропуска "Патерники" - "Григаровщина". С 10 апреля будет возобновлена работа пункта пропуска "Силене".</p>
+                    
+                    <!-- Секция комментариев -->
+                    <div class="comments-section">
+                        <h3>Комментарии (3)</h3>
+                        
+                        <div class="comment">
+                            <div class="comment-avatar"></div>
+                            <div class="comment-content">
+                                <div class="comment-author">Иван Петров</div>
+                                <div class="comment-text">Наконец-то! Уже устал объезжать через другие КПП.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="comment">
+                            <div class="comment-avatar"></div>
+                            <div class="comment-content">
+                                <div class="comment-author">Анна Смирнова</div>
+                                <div class="comment-text">Вау вот это хорошие новости.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="comment">
+                            <div class="comment-avatar"></div>
+                            <div class="comment-content">
+                                <div class="comment-author">Сергей Иванов</div>
+                                <div class="comment-text">Интересно, будут ли там те же правила пропуска, что и раньше?</div>
+                            </div>
+                        </div>
+                        
+                        <div class="comment-form">
+                            <h4>Добавить комментарий</h4>
+                            <textarea placeholder="Ваш комментарий..."></textarea>
+                            <button type="submit">Отправить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Футер -->
+            <div class="footer">
+                <p>© 2025 Onliner.by. Все права принадлежат их владельцам.</p>
+                <p></p>
+            </div>
+        </div>
+        
+        <!-- Правая серая рамка -->
+        <div class="right-border"></div>
     </div>
-    
-    <img src="https://content.onliner.by/news/970x485/0c96944….jpg" alt="Пустая граница">
-    
-    <h2>Фейковые причины «открытия»:</h2>
-    <ol>
-        <li><strong>Латвия вступила в Таможенный союз… случайно</strong><br>
-            По данным инсайдеров, латвийский чиновник перепутал документы и подписал не ту бумагу.</li>
-        <li><strong>Пограничников заменили на голограммы</strong><br>
-            В рамках эксперимента ЕС КПП Силене перешел на цифровое управление.</li>
-        <li><strong>Очереди испугались и разбежались</strong><br>
-            Психолог ГПК: «Люди осознали, что стоять 12 часов ради штампа — это абсурд».</li>
-    </ol>
-    
-    <a href="#" class="button">Читать все комментарии (18+)</a>
-    
-    <div class="footer">
-        Onliner напоминает: материал опубликован 1 апреля. Не верьте всему, что читаете в интернете!
-    </div>
+
+    <script>
+        // Мобильное меню
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+        
+        // Плавная прокрутка для якорей
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Анимация при загрузке
+        window.addEventListener('load', function() {
+            const elements = document.querySelectorAll('.comment, .ad-banner');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.animation = 'fadeIn 0.5s ease forwards';
+                }, index * 200);
+            });
+        });
+    </script>
 </body>
 </html>
